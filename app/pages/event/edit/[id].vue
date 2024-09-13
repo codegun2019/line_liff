@@ -1,18 +1,28 @@
 <script setup lang="ts">
 import type { FormError, FormSubmitEvent } from '#ui/types'
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
+const cardId = ref<number | null>(null);
+
+onMounted(() => {
+  cardId.value = parseInt(route.params.id as string, 10);
+  // ดึงข้อมูลการ์ดจากเซิร์ฟเวอร์หรือสถานะของคุณตาม cardId.value
+});
 const fileRefLogo = ref<HTMLInputElement>()
 const fileRefBg = ref<HTMLInputElement>()
 const fileRefPost = ref<HTMLInputElement>()
 const fileRefShare = ref<HTMLInputElement>()
 
 const selected = ref(false)
+const apppublished = ref(false)
 
 const isDeleteAccountModalOpen = ref(false)
 
 const state = reactive({
   name: 'name',
-  chanelid: '2006157295',
+  chanelid: cardId,
   chanelname: 'Chanel Name',
   liffid: '2006157295-Adoy9vwj',
   liffurl: '2006157295-Adoy9vwj',
@@ -115,7 +125,6 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     </UDashboardSection>
 
     <UDivider class="mb-4" />
-
     <UForm
       :state="state"
       :validate="validate"
@@ -400,6 +409,17 @@ async function onSubmit(event: FormSubmitEvent<any>) {
         </UFormGroup>
 
         <UFormGroup
+          name="apppublished"
+          label="ปิด/เปิด เผยแพร่การทำงาน"
+          description="หากกดปิดจะไม่สามารถใช้งานลิ้งแชร์กิจกรรมนี้ได้"
+          class="grid grid-cols-2 gap-2"
+          help="ส่วนตัว/สาธารณะ"
+          :ui="{ container: 'flex flex-wrap items-center gap-3', help: 'mt-0' }"
+        >
+        <UToggle v-model="apppublished" />
+        </UFormGroup>
+
+        <UFormGroup
           name="description"
           label="รายละเอียด"
           description="Description รายละเอียดอยู่ใต้ปุ่มแชร์."
@@ -437,3 +457,4 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     <SettingsDeleteAccountModal v-model="isDeleteAccountModalOpen" />
   </UDashboardPanelContent>
 </template>
+
