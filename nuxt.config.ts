@@ -8,6 +8,9 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@vueuse/nuxt'
   ],
+  plugins: [
+    '~/plugins/supabaseClient'  // เพิ่มตรงนี้เพื่อให้ Nuxt โหลด plugin
+  ],
 
   ui: {
     safelistColors: ['primary', 'red', 'orange', 'green']
@@ -42,6 +45,8 @@ export default defineNuxtConfig({
       }
     }
   },
+  
 
   compatibilityDate: '2024-07-11'
+  
 })
